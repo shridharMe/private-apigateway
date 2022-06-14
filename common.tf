@@ -1,7 +1,7 @@
 
 module "lambda_role" {
-  source = "./modules/iam"
-  iam_role_name= join("_", ["lambda_bgd_iam_role", terraform.workspace]) 
+  source        = "./modules/iam"
+  iam_role_name = join("_", ["lambda_bgd_iam_role", terraform.workspace])
 }
 
 
@@ -28,16 +28,16 @@ data "archive_file" "testing_lambda_bgd_code" {
 
 data "aws_iam_policy_document" "vpc_endpoint_policy" {
   statement {
-    sid = "sid1"
-    effect  ="Allow"
+    sid    = "sid1"
+    effect = "Allow"
     principals {
-       type="*"
-       identifiers = ["*"]
+      type        = "*"
+      identifiers = ["*"]
     }
     actions = [
       "*",
     ]
-    resources = [ join("",["arn:aws:execute-api:",var.aws_region,":",data.aws_caller_identity.current.account_id,":",module.apigw.id,"/*"])]
+    resources = [join("", ["arn:aws:execute-api:", var.aws_region, ":", data.aws_caller_identity.current.account_id, ":", module.apigw.id, "/*"])]
   }
 }
 

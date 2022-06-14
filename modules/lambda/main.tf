@@ -12,6 +12,6 @@ resource "aws_lambda_function" "test" {
   }
   environment {
     variables = var.env_variables
- 
+
   }
 }

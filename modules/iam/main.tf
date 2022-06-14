@@ -24,10 +24,10 @@ data "aws_iam_policy_document" "lambda_inline_policy" {
 
 
 resource "aws_iam_role" "iam_for_lambda" {
-  name               = var.iam_role_name 
+  name               = var.iam_role_name
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
   inline_policy {
-    name   = var.iam_role_name 
+    name   = var.iam_role_name
     policy = data.aws_iam_policy_document.lambda_inline_policy.json
   }
 

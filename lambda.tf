@@ -65,8 +65,8 @@ module "lambda_testing" {
   security_group_ids      = [module.sg.ids]
   lambda_handler          = "index.handler"
   lambda_runtime          = "python3.7"
-  env_variables           = {
-    APIGATEWAY_URL        = join("",["https://",module.apigw.id,".execute-api.",var.aws_region,".amazonaws.com/dev/hello"])
+  env_variables = {
+    APIGATEWAY_URL = join("", ["https://", module.apigw.id, ".execute-api.", var.aws_region, ".amazonaws.com/dev/hello"])
   }
 }
 
@@ -74,7 +74,7 @@ module "vpce_apigw" {
   source             = "./modules/vpce"
   name               = "lambda_bgd_vpce"
   vpc_id             = module.vpc.vpc_id
-  service_name       = join("",[ "com.amazonaws.",var.aws_region,".execute-api"])
+  service_name       = join("", ["com.amazonaws.", var.aws_region, ".execute-api"])
   vpc_endpoint_type  = "Interface"
   security_group_ids = module.sg.ids
   subnets            = module.vpc.private_subnets
@@ -88,31 +88,31 @@ module "vpce_apigw" {
 
 
 module "apigw" {
-  source = "./modules/apigw"
-  api_gateway_rest_api_name="lambda_bgd_api"
-  aws_region = var.aws_region
-  aws_account = data.aws_caller_identity.current.account_id
-  api_gateway_stage_name="dev"
-  vpc_id= module.vpc.vpc_id
-  vpc_endpoint_ids = module.vpce_apigw.id
+  source                    = "./modules/apigw"
+  api_gateway_rest_api_name = "lambda_bgd_api"
+  aws_region                = var.aws_region
+  aws_account               = data.aws_caller_identity.current.account_id
+  api_gateway_stage_name    = "dev"
+  vpc_id                    = module.vpc.vpc_id
+  vpc_endpoint_ids          = module.vpce_apigw.id
   aipgw_objects = {
-    api_1={
+    api_1 = {
       api_gateway_stage_path_part         = "hello",
       api_gateway_method_http_method      = "GET",
       api_gateway_rest_api_authorization  = "NONE",
       api_gateway_integration_http_method = "POST",
       api_gateway_integration_type        = "AWS"
-      lambda_invoke_arn                          = module.lambda.invoke_arn
+      lambda_invoke_arn                   = module.lambda.invoke_arn
       lambda_arn                          = module.lambda.arn
     },
-    api_2={
+    api_2 = {
       api_gateway_stage_path_part         = "healthcheck",
       api_gateway_method_http_method      = "GET",
       api_gateway_rest_api_authorization  = "NONE",
       api_gateway_integration_http_method = "POST"
       api_gateway_integration_type        = "AWS"
-      lambda_invoke_arn                          = module.lambda_healthcheck.invoke_arn
-       lambda_arn                          = module.lambda_healthcheck.arn
+      lambda_invoke_arn                   = module.lambda_healthcheck.invoke_arn
+      lambda_arn                          = module.lambda_healthcheck.arn
     }
-}
+  }
 }

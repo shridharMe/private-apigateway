@@ -67,8 +67,8 @@ variable "lambda_runtime" {
 
 }
 variable "env_variables" {
-  type=map
-  default={
-      STATUS = "healthy"
-    }
+  type = map(any)
+  default = {
+    STATUS = "healthy"
+  }
 }
