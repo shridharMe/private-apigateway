@@ -1,0 +1,12 @@
+output "invoke_arn" {
+  value = aws_lambda_function.test.invoke_arn
+}
+
+output "arn" {
+  value = aws_lambda_function.test.arn
+}
+
+
+output "function_name" {
+  value = aws_lambda_function.test.function_name
+}
